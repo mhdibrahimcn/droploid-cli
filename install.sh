@@ -1,37 +1,34 @@
 #!/usr/bin/env bash
-# Droploid CLI installer (macOS + Linux). Builds the app submodule, then drops a
-# `droploid` shim on your PATH.
-#   git clone --recurse-submodules https://github.com/mhdibrahimcn/droploid-cli.git
-#   cd droploid-cli && ./install.sh
+# Droploid CLI installer (macOS + Linux). One-liner:
+#   curl -fsSL https://raw.githubusercontent.com/mhdibrahimcn/droploid-cli/main/install.sh | bash
 set -euo pipefail
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-APP="$DIR/app"
+REPO="https://github.com/mhdibrahimcn/Droploid-_electron.git"
+DIR="${DROPLOID_HOME:-$HOME/.droploid}"
 
-# Pull the app submodule if it wasn't cloned with --recurse-submodules.
-if [ ! -f "$APP/package.json" ]; then
-  echo "→ Fetching app submodule"
-  ( cd "$DIR" && git submodule update --init --recursive )
+command -v git >/dev/null || { echo "droploid: git is required"; exit 1; }
+command -v npm >/dev/null || { echo "droploid: Node.js (npm) is required"; exit 1; }
+
+if [ -d "$DIR/.git" ]; then
+  echo "→ Updating $DIR"
+  git -C "$DIR" pull --ff-only -q
+else
+  echo "→ Cloning Droploid to $DIR"
+  git clone -q "$REPO" "$DIR"
 fi
 
-command -v npm >/dev/null || { echo "npm required (install Node.js first)"; exit 1; }
-echo "→ Building Droploid ($APP)"
-( cd "$APP" && { [ -d node_modules ] || npm ci; } && npm run build )
+echo "→ Building (first run takes a minute)"
+( cd "$DIR" && npm ci --silent && npm run build >/dev/null )
 
-pick_bindir() {
-  for d in /usr/local/bin "$HOME/.local/bin"; do
-    case ":$PATH:" in *":$d:"*) [ -w "$d" ] || [ ! -e "$d" ] && { echo "$d"; return; } ;; esac
-  done
-  echo "$HOME/.local/bin"
-}
-BINDIR="$(pick_bindir)"; mkdir -p "$BINDIR"
-SHIM="$BINDIR/droploid"
-cat > "$SHIM" <<EOF
+BIN="${DROPLOID_BIN:-/usr/local/bin}"
+[ -w "$BIN" ] || BIN="$HOME/.local/bin"
+mkdir -p "$BIN"
+cat > "$BIN/droploid" <<EOF
 #!/usr/bin/env bash
-exec "$APP/node_modules/.bin/electron" "$APP/out/main/index.js" --cli "\$@"
+exec "$DIR/node_modules/.bin/electron" "$DIR/out/main/index.js" --cli "\$@"
 EOF
-chmod +x "$SHIM"
+chmod +x "$BIN/droploid"
 
-echo "✓ Installed: $SHIM"
-case ":$PATH:" in *":$BINDIR:"*) ;; *) echo "  ⚠ Add to PATH:  export PATH=\"$BINDIR:\$PATH\"" ;; esac
-echo "  Try:  droploid setup"
+echo "✓ Installed → $BIN/droploid"
+case ":$PATH:" in *":$BIN:"*) ;; *) echo "  Add to PATH:  export PATH=\"$BIN:\$PATH\"" ;; esac
+echo "  Get started:  droploid setup"

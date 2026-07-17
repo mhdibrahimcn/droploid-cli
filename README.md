@@ -21,24 +21,22 @@ droploid deploy MyApp --track production --bump patch --json
 
 ## Install
 
-### Homebrew (macOS & Linux)
+**One line (macOS & Linux):**
 
 ```bash
-brew install --HEAD mhdibrahimcn/tap/droploid
-# or, from this repo:
-brew install --HEAD ./HomebrewFormula/droploid.rb
+curl -fsSL https://raw.githubusercontent.com/mhdibrahimcn/droploid-cli/main/install.sh | bash
 ```
 
-### From source (git submodule)
+It clones Droploid to `~/.droploid`, builds it, and drops a `droploid` command on your `PATH`.
+Re-run any time to update. Override the location with `DROPLOID_HOME` / `DROPLOID_BIN`.
+
+**Homebrew:**
 
 ```bash
-git clone --recurse-submodules https://github.com/mhdibrahimcn/droploid-cli.git
-cd droploid-cli && ./install.sh
+brew install --HEAD mhdibrahimcn/tap/droploid   # or: brew install --HEAD ./HomebrewFormula/droploid.rb
 ```
 
-`install.sh` builds the `app/` submodule and drops a `droploid` shim on your `PATH`
-(`/usr/local/bin` or `~/.local/bin`). Already cloned without submodules? Run
-`git submodule update --init --recursive` first (the installer also does this for you).
+Requires **git** and **Node.js**. iOS builds also need macOS + Xcode.
 
 ---
 
