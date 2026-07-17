@@ -33,7 +33,7 @@ Re-run any time to update. Override the location with `DROPLOID_HOME` / `DROPLOI
 **Homebrew:**
 
 ```bash
-brew install --HEAD mhdibrahimcn/tap/droploid   # or: brew install --HEAD ./HomebrewFormula/droploid.rb
+brew install mhdibrahimcn/tap/droploid
 ```
 
 Requires **git** and **Node.js**. iOS builds also need macOS + Xcode.
