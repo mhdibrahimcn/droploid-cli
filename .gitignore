@@ -1,0 +1,6 @@
+# The app submodule builds these locally:
+app/node_modules/
+app/out/
+app/dist/
+.DS_Store
+*.log
