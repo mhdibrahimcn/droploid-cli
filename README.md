@@ -33,7 +33,9 @@ Re-run any time to update. Override the location with `DROPLOID_HOME` / `DROPLOI
 **Homebrew:**
 
 ```bash
-brew install mhdibrahimcn/tap/droploid
+brew tap mhdibrahimcn/tap
+brew trust mhdibrahimcn/tap        # Homebrew now requires trusting third-party taps
+brew install droploid
 ```
 
 Requires **git** and **Node.js**. iOS builds also need macOS + Xcode.
