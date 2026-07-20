@@ -13,7 +13,7 @@ code-push patches — without a GUI. Every command speaks JSON, so an **AI agent
 whole mobile release pipeline.
 
 ```bash
-droploid setup                                   # guided, no-flags first-time setup
+droploid init                                   # guided, no-flags first-time setup
 droploid deploy MyApp --track production --bump patch --json
 ```
 
@@ -46,7 +46,7 @@ Requires **git** and **Node.js**. iOS builds also need macOS + Xcode.
 
 | Command | Description |
 |---|---|
-| `droploid setup` | Interactive first-time setup — no flags, just answer prompts |
+| `droploid init` | Interactive first-time setup — no flags, just answer prompts |
 | `droploid orgs` / `apps` / `tools` | List orgs / apps / check toolchain |
 | `droploid link <dir> --org <id\|name>` | Detect & link a Flutter/iOS/Android project |
 | `droploid config-org --name <name> [creds]` | Create/update an org non-interactively |
@@ -62,7 +62,7 @@ App/org resolve by **id or name**, or positionally (`droploid deploy MyApp`). Ru
 - **iOS** — App Store Connect ▸ Users and Access ▸ Integrations ▸ App Store Connect API (Issuer ID, Key ID, download the `.p8` once).
 - **Android** — Google Cloud Console ▸ IAM & Admin ▸ Service Accounts ▸ Keys ▸ Add key ▸ JSON, then grant that service-account email in Play Console ▸ Users and permissions / API access.
 
-`droploid setup` prints these hints inline as it asks.
+`droploid init` prints these hints inline as it asks.
 
 ---
 
